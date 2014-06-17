@@ -7,6 +7,6 @@ Then run this command to start a postgres container:
 # ./run-pg
 ```
 
-This will assign a data container for postgres (devbox-pg-data) and fire up a postgres container mapped to port 5432 on the boot2docker host.
+This will assign a data container for postgres (devbox-pg-data) and fire up a postgres container (devbox-pg) mapped to port 5432 on the boot2docker host.
 
 
