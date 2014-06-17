@@ -1,0 +1,36 @@
+#!/bin/bash
+
+STATUS=$(boot2docker status)
+
+if [ "running" != "$STATUS" ]; then
+  echo "Make sure boot2docker is running (boot2docker start)" 
+  exit 1;
+fi
+
+PG_PORT=5432
+DATA_CONTAINER=devbox-pg-data
+PG_CONTAINER=devbox-pg
+
+HOST_IP=$(boot2docker ip 2>/dev/null)
+HOST_PORT=$(boot2docker config 2>/dev/null | grep DockerPort | cut -d " " -f 3 | sed s/\"//g)
+
+export DOCKER_HOST=tcp://$HOST_IP:$HOST_PORT
+
+if [ "$(docker ps -a | grep "\s$DATA_CONTAINER\s")" == "" ]; then
+  echo Starting $DATA_CONTAINER
+  docker run --name $DATA_CONTAINER -v /etc/postgresql -v /var/log/postgresql -v /var/lib/postgresql busybox true
+fi
+
+if [ "$(docker ps -a | grep "\s$PG_CONTAINER\s")" == "" ]; then
+  echo Starting PG_CONTAINER
+  docker run -d --name $PG_CONTAINER -p $PG_PORT:5432 --volumes-from $DATA_CONTAINER postgres
+fi
+
+echo Postgres is running
+echo Host: $HOST_IP Port: $PG_PORT
+echo Use these settings in rails\' database.yml
+echo host: $HOST_IP
+echo port: $PG_PORT
+echo username: postgres
+echo password: 
+echo template: template0
