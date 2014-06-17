@@ -1,8 +1,8 @@
-Scripts to run development infrastructure via docker / boot2docker.
+(OS X-focused) scripts to run development infrastructure via [docker](http://www.docker.com) / boot2docker.
 
-Make sure that you have initialized boot2docker and that boot2docker is running.
+Make sure that you have initialized [boot2docker](http://boot2docker.io/) and that boot2docker is running.
 
-Then run this command to start a postgres:
+Then run this command to start a postgres container:
 ```
 # ./run-pg
 ```
