@@ -21,8 +21,9 @@ if [ "$(docker ps -a | grep "\s$DATA_CONTAINER\s")" == "" ]; then
   docker run --name $DATA_CONTAINER -v /etc/postgresql -v /var/log/postgresql -v /var/lib/postgresql busybox true
 fi
 
-if [ "$(docker ps -a | grep "\s$PG_CONTAINER\s")" == "" ]; then
+if [ "$(docker ps | grep "\s$PG_CONTAINER\s")" == "" ]; then
   echo Starting PG_CONTAINER
+  docker rm $PG_CONTAINER > /dev/null 2>&1
   docker run -d --name $PG_CONTAINER -p $PG_PORT:5432 --volumes-from $DATA_CONTAINER postgres
 fi
 
